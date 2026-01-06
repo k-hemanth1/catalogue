@@ -1,60 +1,60 @@
-pipeline {
-    // These are pre-build sections
+ppipeline {
     agent {
         node {
             label 'AGENT-1'
         }
     }
+
+    parameters {
+        booleanParam(
+            name: 'DEPLOY',
+            defaultValue: false,
+            description: 'Deploy the application'
+        )
+    }
+
     environment {
         COURSE = "Jenkins"
     }
+
     options {
-        timeout(time: 10, unit: 'MINUTES') 
+        timeout(time: 10, unit: 'MINUTES')
         disableConcurrentBuilds()
     }
-    // This is build section
+
     stages {
         stage('Build') {
             steps {
-                script{
-                   def packageJSON = readJSON file: 'package.JSON'
-                   appversion = package.json.version
-                   echo "app version: ${appversion}"
+                script {
+                    def packageJSON = readJSON file: 'package.json'
+                    def appversion = packageJSON.version
+                    echo "App version: ${appversion}"
                 }
             }
         }
+
         stage('Test') {
             steps {
-                script{
-                    sh """
-                        echo "Building"
-                    """
-                }
+                sh '''
+                    echo "Testing application"
+                '''
             }
         }
+
         stage('Deploy') {
-            // input {
-            //     message "Should we continue?"
-            //     ok "Yes, we should."
-            //     submitter "alice,bob"
-            //     parameters {
-            //         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-            //     }
-            // }
-            when { 
-                expression { "$params.DEPLOY" == "true" }
+            when {
+                expression { params.DEPLOY == true }
             }
             steps {
-                script{
-                    sh """
-                        echo "Building"
-                    """
-                }
+                sh '''
+                    echo "Deploying application"
+                '''
             }
         }
     }
-    post{
-        always{
+
+    post {
+        always {
             echo 'I will always say Hello again!'
             cleanWs()
         }
