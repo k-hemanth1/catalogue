@@ -40,6 +40,15 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Build image') {
+            steps {
+                sh '''
+                   docker build -t catalogue:${appversion} .
+                   docker images
+                '''
+            }
+        }
 
         stage('Deploy') {
             when {
