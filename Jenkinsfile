@@ -1,4 +1,4 @@
-ppipeline {
+pipeline {
     agent {
         node {
             label 'AGENT-1'
@@ -36,7 +36,7 @@ ppipeline {
         stage('Test') {
             steps {
                 sh '''
-                    echo "Testing application"
+                    echo "Running tests..."
                 '''
             }
         }
@@ -47,7 +47,7 @@ ppipeline {
             }
             steps {
                 sh '''
-                    echo "Deploying application"
+                    echo "Deploying application..."
                 '''
             }
         }
@@ -55,17 +55,17 @@ ppipeline {
 
     post {
         always {
-            echo 'I will always say Hello again!'
+            echo 'Post step: always'
             cleanWs()
         }
         success {
-            echo 'I will run if success'
+            echo 'Post step: success'
         }
         failure {
-            echo 'I will run if failure'
+            echo 'Post step: failure'
         }
         aborted {
-            echo 'pipeline is aborted'
+            echo 'Post step: aborted'
         }
     }
 }
