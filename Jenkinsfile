@@ -33,10 +33,10 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
                 sh '''
-                    echo "Running tests..."
+                    npm install
                 '''
             }
         }
